@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html
+        PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xml:lang="en" lang="en">
+<h:head>
+    <title>Комп</title>
+    <h:outputStylesheet library="css" name="primefaces.css"/>
+</h:head>
+<body>
+    <f:view>
+        <h:form id="form">
+            <p:growl id="msgs" showDetail="true"/>
+            <div align="center">
+                <p:dataTable class="dataTable" id="components" widgetVar="components" var="compon" value="#{sortView.components}"
+                             editable="true"
+                             rowIndexVar="indexVar" rows="10"
+                             paginator="true"
+                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
+                             {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                             rowsPerPageTemplate="5,10,15"  resizableColumns="true">>
+                    <f:facet name="header">COMPONENTS</f:facet>
+                    <p:ajax event="rowEdit" listener="#{sortView.onRowEdit}" update=":form:msgs"  />
+                    <p:ajax event="rowEditCancel" listener="#{sortView.onRowCancel}" update=":form:msgs" oncomplete=""/>
+<!--                    <p:ajax event="cellEdit" listener="#{sortView.onCellEdit}" update=":form:msgs"/>-->
+                    <p:column headerText="№" style="width: 5%;">
+                        <h:outputText value="#{indexVar + 1}"/>
+                    </p:column>
+
+                    <p:column headerText="Наименование" sortBy="#{compon.description}">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{compon.description}"/></f:facet>
+                            <f:facet name="input">
+                                <p:inputText id="modelInput" value="#{compon.description}" style="width:96%; text-align: center"/>
+                            </f:facet>
+                        </p:cellEditor>
+                    </p:column>
+
+                    <p:column headerText="Необходимость" sortBy="#{compon.needForAssembly}" style="width: 16%">
+                        <p:selectBooleanButton id="value1" value="#{compon.needForAssembly}" onLabel="Yes" offLabel="No"
+                                               style="width:60px"/>
+                    </p:column>
+                    <p:column headerText="Количество" sortBy="#{compon.count}" style="width: 12%">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{compon.count}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{compon.count}"
+                                                               style="width:96%; text-align: center"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="Assembly" sortBy="#{compon.countForAssembly}" style="width: 12%">
+                        <p:cellEditor>
+                            <f:facet name="output"><h:outputText value="#{compon.countForAssembly}"/></f:facet>
+                            <f:facet name="input"><p:inputText value="#{compon.countForAssembly}"
+                                                               style="width:96%; text-align: center"/></f:facet>
+                        </p:cellEditor>
+                    </p:column>
+                    <p:column headerText="DEL" style="width: 7%">
+                        <p:commandLink action="#{sortView.delete(compon)}" title="Delete" update="components">
+                            <i class="fa fa-trash" style="font-size: 1.5em"/>
+                        </p:commandLink>
+                    </p:column>
+                    <p:column headerText="EDT" style="width:35px">
+                        <p:rowEditor />
+                    </p:column>
+                    <f:facet name="footer">
+                         <h:outputText widg="computers" value="Count of assembled computers is #{sortView.calculateComputers()}"/>
+                    </f:facet>
+                </p:dataTable>
+                <div class="ui-g">
+                    <div class="ui-g-12">
+                        <p:commandButton value="Add new component" styleClass="ui-priority-primary" process="@this" update=":form:msgs"
+                                         action="#{sortView.addComponent}" oncomplete="PF('components').addRow();"/>
+                    </div>
+                </div>
+            </div>
+        </h:form>
+    </f:view>
+</body>
+</html>

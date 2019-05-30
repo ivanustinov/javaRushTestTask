@@ -1,0 +1,108 @@
+body {
+    background: #f8f8f8;
+}
+
+body h3 {
+    text-align: center;
+}
+
+.menu {
+    list-style: none;
+    color: rgb(186, 18, 36);
+    font: bold 18px Bahnschrift sans-serif;
+    text-align: center;
+}
+
+.menu li a {
+    color: inherit;
+}
+
+.menu li {
+    display: inline;
+    margin-right: 5px;
+}
+
+#catalog div form{
+    display: inline-block;
+    margin-bottom: 0em;
+}
+
+/*#catalog img {*/
+/*height: 200px;*/
+/*}*/
+
+#product img {
+    border: 5px solid seagreen;
+    width: 150px;
+}
+
+#product a {
+    padding-left: 30px;
+}
+
+#product h2 {
+    color: black;
+    font-size: 18px;
+    font-weight: 400;
+    background: #eaeaea;
+}
+
+.logotip {
+    background-image: linear-gradient(277deg, #1b81d7 0%, #1f4869 100%);
+    display: inline-block;
+    box-sizing: border-box;
+    margin: inherit;
+    font-size: 30px;
+    text-align: left;
+    color: #ffffff;
+    padding-top: 40px;
+    padding-left: 10px;
+    float: left;
+    height: 100%;
+    width: 90%;
+    box-sizing: border-box;
+}
+.label {
+    float: left;
+    background:#1b81d7;
+    width: 10%;
+    height: 100%;
+    box-sizing: border-box;
+    padding-top: 5px;
+    padding-right: 5px;
+    padding-bottom: 5px
+}
+
+#product ul {
+    color: #900c26;
+    font: lighter 20px Georgia serif;
+    list-style-image: url("resources/images/ekaterinburg-gerb.jpg");
+}
+
+#product p {
+    width: 1000px;
+}
+
+#description {
+    color: #707070;
+    font-size: 14px;
+    font-style: italic;
+    line-height: 16px;
+}
+
+#detailed_description {
+    color: #484343;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 24px;
+}
+
+input, textarea {
+    font: lighter 18px Candara serif;
+    color: #4261c5;
+    width: 400px;
+}
+
+input {
+    height: 26px;
+}

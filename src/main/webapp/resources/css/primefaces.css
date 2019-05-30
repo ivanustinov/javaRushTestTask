@@ -1,0 +1,20 @@
+.ui-tabmenu .ui-tabmenu-nav .ui-tabmenuitem {
+    float: right !important;
+}
+
+.ui-helper-reset {
+    line-height: 1.5em !important;
+}
+
+
+
+.dataTable {
+    width: 55%;
+    text-align: center;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+body {
+    margin: 0px;
+}

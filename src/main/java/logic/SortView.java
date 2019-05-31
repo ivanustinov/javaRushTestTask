@@ -29,6 +29,7 @@ import java.util.Map;
 @ApplicationScoped
 public class SortView implements Serializable {
     private List<Component> components;
+    private List<Component> filtered;
     @Inject
     private DaoAccess daoAccess;
 
@@ -39,7 +40,10 @@ public class SortView implements Serializable {
 
     public void delete(Component component) {
         components.remove(component);
+        filtered.remove(component);
         daoAccess.delete(component);
+        FacesMessage msg = new FacesMessage("Component has deleted", component.getDescription());
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
     public Component addComponent() {
         Component component = new Component("NEW", 0, false, 0);
@@ -68,14 +72,31 @@ public class SortView implements Serializable {
     }
     public void onRowEdit(RowEditEvent event) {
         Component component = (Component) event.getObject();
+        System.out.println(filtered.size());
         daoAccess.update(component);
-        FacesMessage msg = new FacesMessage("Car Edited", component.getDescription());
+        FacesMessage msg = new FacesMessage("Component Edited", component.getDescription());
         FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 
     public void onRowCancel(RowEditEvent event) {
         FacesMessage msg = new FacesMessage("Edit Cancelled", ((Component) event.getObject()).getDescription());
         FacesContext.getCurrentInstance().addMessage(null, msg);
+    }
+    public void onCellEdit(CellEditEvent event) {
+        FacesContext context = FacesContext.getCurrentInstance();
+        Component component = context.getApplication().evaluateExpressionGet(context, "#{compon}", Component.class);
+        daoAccess.update(component);
+        Object oldValue = event.getOldValue();
+        Object newValue = event.getNewValue();
+        if(newValue != null && !newValue.equals(oldValue)) {
+            FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Cell Changed", "Old: " + oldValue + ", New:" + newValue);
+            FacesContext.getCurrentInstance().addMessage(null, msg);
+        }
+    }
+    public void addMessage(Component component) {
+        String summary = String.format("Changed to %s", component.isNeedForAssembly() ? "true" : "false");
+        FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(summary));
+        daoAccess.update(component);
     }
 
 }

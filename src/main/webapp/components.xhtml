@@ -16,63 +16,80 @@
         <h:form id="form">
             <p:growl id="msgs" showDetail="true"/>
             <div align="center">
-                <p:dataTable class="dataTable" id="components" widgetVar="components" var="compon" value="#{sortView.components}"
+                <p:remoteCommand name="onRowEdit" update="components"/>
+                <p:dataTable class="dataTable" id="components" widgetVar="components" var="compon"
+                             value="#{sortView.components}"
+                             filteredValue="#{sortView.filtered}"
+                             emptyMessage="No components found with given criteria"
                              editable="true"
                              rowIndexVar="indexVar" rows="10"
                              paginator="true"
                              paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink}
                              {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="5,10,15"  resizableColumns="true">>
+                             rowsPerPageTemplate="5,10,15"
+                             resizableColumns="true">
                     <f:facet name="header">COMPONENTS</f:facet>
-                    <p:ajax event="rowEdit" listener="#{sortView.onRowEdit}" update=":form:msgs"  />
-                    <p:ajax event="rowEditCancel" listener="#{sortView.onRowCancel}" update=":form:msgs" oncomplete=""/>
-<!--                    <p:ajax event="cellEdit" listener="#{sortView.onCellEdit}" update=":form:msgs"/>-->
+                    <p:ajax event="rowEdit" listener="#{sortView.onRowEdit}" update=":form:msgs"
+                            oncomplete="onRowEdit()"/>
+                    <p:ajax event="rowEditCancel" listener="#{sortView.onRowCancel}" update=":form:msgs"/>
+                    <!--<p:ajax event="cellEdit" listener="#{sortView.onCellEdit}" update=":form:msgs" oncomplete="onRowEdit()"/>-->
                     <p:column headerText="№" style="width: 5%;">
                         <h:outputText value="#{indexVar + 1}"/>
                     </p:column>
 
-                    <p:column headerText="Наименование" sortBy="#{compon.description}">
+                    <p:column headerText="Наименование" sortBy="#{compon.description}" filterBy="#{compon.description}" filterStyle="display:none">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{compon.description}"/></f:facet>
                             <f:facet name="input">
-                                <p:inputText id="modelInput" value="#{compon.description}" style="width:96%; text-align: center"/>
+                                <p:inputText value="#{compon.description}"
+                                             style="width:96%; text-align: center"/>
                             </f:facet>
                         </p:cellEditor>
                     </p:column>
 
-                    <p:column headerText="Необходимость" sortBy="#{compon.needForAssembly}" style="width: 16%">
+                    <p:column headerText="Необходимость"  sortBy="#{compon.needForAssembly}" style="width: 115px">
                         <p:selectBooleanButton id="value1" value="#{compon.needForAssembly}" onLabel="Yes" offLabel="No"
-                                               style="width:60px"/>
+                                               style="width:60px">
+                            <p:ajax listener="#{sortView.addMessage(compon)}" update=":form:msgs"
+                                    oncomplete="onRowEdit()"/>
+                        </p:selectBooleanButton>
                     </p:column>
-                    <p:column headerText="Количество" sortBy="#{compon.count}" style="width: 12%">
+                    <p:column headerText="Количество" sortBy="#{compon.count}" style="width: 90px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{compon.count}"/></f:facet>
                             <f:facet name="input"><p:inputText value="#{compon.count}"
                                                                style="width:96%; text-align: center"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="Assembly" sortBy="#{compon.countForAssembly}" style="width: 12%">
+                    <p:column headerText="Кол-во для сборки" sortBy="#{compon.countForAssembly}" style="width: 115px">
                         <p:cellEditor>
                             <f:facet name="output"><h:outputText value="#{compon.countForAssembly}"/></f:facet>
                             <f:facet name="input"><p:inputText value="#{compon.countForAssembly}"
                                                                style="width:96%; text-align: center"/></f:facet>
                         </p:cellEditor>
                     </p:column>
-                    <p:column headerText="DEL" style="width: 7%">
-                        <p:commandLink action="#{sortView.delete(compon)}" title="Delete" update="components">
+                    <p:column headerText="DEL" style="width: 6%">
+                        <p:commandLink action="#{sortView.delete(compon)}" title="Delete" update=":form:msgs" oncomplete="onRowEdit()">
                             <i class="fa fa-trash" style="font-size: 1.5em"/>
                         </p:commandLink>
                     </p:column>
                     <p:column headerText="EDT" style="width:35px">
-                        <p:rowEditor />
+                        <p:rowEditor/>
                     </p:column>
                     <f:facet name="footer">
-                         <h:outputText widg="computers" value="Count of assembled computers is #{sortView.calculateComputers()}"/>
+                        <h:outputText style="font-size: 16px"
+                                      value="Count of assembled computers is #{sortView.calculateComputers()}"/>
+                        <p:outputPanel style="margin-top: 10px">
+                            <h:outputText value="Search components: "/>
+                            <p:inputText id="globalFilter" onkeyup="PF('components').filter()" style="width:150px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
                     </f:facet>
                 </p:dataTable>
+
                 <div class="ui-g">
                     <div class="ui-g-12">
-                        <p:commandButton value="Add new component" styleClass="ui-priority-primary" process="@this" update=":form:msgs"
+                        <p:commandButton value="Add new component" styleClass="ui-priority-primary" process="@this"
+                                         update=":form:msgs"
                                          action="#{sortView.addComponent}" oncomplete="PF('components').addRow();"/>
                     </div>
                 </div>

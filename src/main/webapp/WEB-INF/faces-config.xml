@@ -11,9 +11,5 @@
             <to-view-id>/components.xhtml</to-view-id>
             <redirect/>
         </navigation-case>
-        <navigation-case>
-            <from-outcome>busStorage</from-outcome>
-            <to-view-id>/WEB-INF/view/bus_storage.xhtml</to-view-id>
-        </navigation-case>
     </navigation-rule>
 </faces-config>

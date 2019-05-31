@@ -1,11 +1,7 @@
 package entities;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
 
-import javax.faces.bean.ManagedBean;
-import javax.inject.Named;
 import javax.persistence.*;
 
 /**

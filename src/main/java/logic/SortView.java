@@ -40,7 +40,9 @@ public class SortView implements Serializable {
 
     public void delete(Component component) {
         components.remove(component);
-        filtered.remove(component);
+        if (filtered != null) {
+            filtered.remove(component);
+        }
         daoAccess.delete(component);
         FacesMessage msg = new FacesMessage("Component has deleted", component.getDescription());
         FacesContext.getCurrentInstance().addMessage(null, msg);

@@ -49,9 +49,13 @@ public class SortView implements Serializable {
     }
     public Component addComponent() {
         Component component = new Component("NEW", 0, false, 0);
+        if (filtered != null) {
+            filtered = components;
+            System.out.println(filtered);
+        }
         components.add(component);
         daoAccess.add(component);
-        FacesMessage msg = new FacesMessage("New component added", "Unknown");
+        FacesMessage msg = new FacesMessage("New component added", "NEW");
         FacesContext.getCurrentInstance().addMessage(null, msg);
         return component;
     }

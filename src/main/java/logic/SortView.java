@@ -50,7 +50,7 @@ public class SortView implements Serializable {
     public Component addComponent() {
         Component component = new Component("NEW", 0, false, 0);
         if (filtered != null) {
-            filtered = components;
+            filtered.add(component);
             System.out.println(filtered);
         }
         components.add(component);
@@ -70,7 +70,7 @@ public class SortView implements Serializable {
                 if (b != 0) {
                     int w = a / b;
                     if (c == 0) c = w;
-                    c = c > w ? w : c;
+                    c = Math.min(c, w);
                 }
             }
         }

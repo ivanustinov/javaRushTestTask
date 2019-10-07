@@ -30,8 +30,9 @@ import java.util.Queue;
 @Data
 @ApplicationScoped
 public class DaoAccess {
+
     private StandardServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().configure().build();
-    ;
+
     private SessionFactory sessionFactory = new MetadataSources(serviceRegistry).buildMetadata().buildSessionFactory();
 
 
